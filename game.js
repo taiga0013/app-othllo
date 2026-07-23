@@ -379,7 +379,7 @@ function aiTryBarrier() {
   simBarrier[bc.row][bc.col] = true;
   const normalEval = evaluateBoard(board, barrierActive, currentPlayer);
   const barrierEval = evaluateBoard(board, simBarrier, currentPlayer);
-  const threshold = aiLevel >= 4 ? 8 : aiLevel >= 3 ? 5 : 3;
+  const threshold = aiLevel >= 4 ? 10 : aiLevel >= 3 ? 7 : 5;
   if (barrierEval > normalEval + threshold) return bc;
   return null;
 }
@@ -415,7 +415,10 @@ function aiMove() {
 
     let chosenMove;
 
-    if (aiLevel === 1) {
+    const mistakeChance = aiLevel === 1 ? 0.35 : aiLevel === 2 ? 0.2 : aiLevel === 3 ? 0.12 : 0.06;
+    if (Math.random() < mistakeChance) {
+      chosenMove = moves[Math.floor(Math.random() * moves.length)];
+    } else if (aiLevel === 1) {
       const scored = moves.map(m => ({
         ...m,
         score: POSITION_WEIGHTS[m.row][m.col] + Math.random() * 30 - 15
@@ -439,12 +442,12 @@ function aiMove() {
         }
       }
     } else if (aiLevel === 3) {
-      const depth = 4;
+      const depth = 3;
       const result = minimax(board, barrierActive, currentPlayer, barrierAvailable,
                              depth, -Infinity, Infinity, true, currentPlayer);
       chosenMove = result.move || moves[0];
     } else {
-      const depth = 6;
+      const depth = 5;
       const result = minimax(board, barrierActive, currentPlayer, barrierAvailable,
                              depth, -Infinity, Infinity, true, currentPlayer);
       chosenMove = result.move || moves[0];
