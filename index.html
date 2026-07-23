@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>オセロ - バリア石ルール</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <div id="menu-screen" class="screen active">
+    <div class="menu-box">
+      <h1>オセロ</h1>
+      <p class="subtitle">バリア石ルール</p>
+      <div class="mode-select">
+        <button class="mode-btn" data-mode="pvp" onclick="startGame('pvp')">2人対戦</button>
+        <button class="mode-btn" data-mode="ai" onclick="showAISettings()">AI対戦</button>
+      </div>
+      <div id="ai-settings" class="hidden">
+        <h3>AI難易度</h3>
+        <div class="difficulty-select">
+          <button class="diff-btn" data-level="1" onclick="setAIDifficulty(1)">初級</button>
+          <button class="diff-btn" data-level="2" onclick="setAIDifficulty(2)">中級</button>
+          <button class="diff-btn" data-level="3" onclick="setAIDifficulty(3)">上級</button>
+          <button class="diff-btn" data-level="4" onclick="setAIDifficulty(4)">最強</button>
+        </div>
+        <p id="ai-desc" class="ai-desc">難易度を選択してください</p>
+        <div class="stone-select">
+          <p>あなたの石:</p>
+          <button class="stone-option" onclick="selectPlayerStone(1)">
+            <span class="stone-preview dark"></span> 黒 (先手)
+          </button>
+          <button class="stone-option" onclick="selectPlayerStone(2)">
+            <span class="stone-preview light"></span> 白 (後手)
+          </button>
+        </div>
+        <button class="start-ai-btn" onclick="startGame('ai')" disabled id="start-ai-btn">対戦開始</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-screen" class="screen hidden">
+    <div class="game-layout">
+      <div class="sidebar left-sidebar">
+        <div class="player-info" id="player1-info">
+          <div class="player-name"><span class="stone-icon dark"></span> 黒</div>
+          <div class="player-score" id="score-black">2</div>
+          <div class="barrier-status" id="barrier-black">
+            <span class="barrier-icon">🛡</span> バリア: <span id="barrier-black-status">使用可</span>
+          </div>
+          <div class="turn-indicator" id="turn-black">● 手番</div>
+        </div>
+      </div>
+
+      <div class="board-container">
+        <div id="board"></div>
+        <div id="status-bar">
+          <span id="game-status">黒の手番</span>
+        </div>
+        <div id="barrier-controls">
+          <button id="barrier-btn" onclick="toggleBarrierMode()" disabled>🛡 バリア石を使用</button>
+          <button id="cancel-barrier-btn" class="hidden" onclick="cancelBarrierMode()">キャンセル</button>
+        </div>
+        <div id="barrier-hint" class="hidden">バリア石を置くマスをクリックしてください</div>
+      </div>
+
+      <div class="sidebar right-sidebar">
+        <div class="player-info" id="player2-info">
+          <div class="player-name"><span class="stone-icon light"></span> 白</div>
+          <div class="player-score" id="score-white">2</div>
+          <div class="barrier-status" id="barrier-white">
+            <span class="barrier-icon">🛡</span> バリア: <span id="barrier-white-status">使用可</span>
+          </div>
+          <div class="turn-indicator" id="turn-white">○ 待機</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-actions">
+      <button onclick="showMenu()" class="menu-btn">メニューに戻る</button>
+      <button onclick="restartGame()" class="restart-btn">やり直す</button>
+    </div>
+  </div>
+
+  <div id="result-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="result-title">ゲーム終了</h2>
+      <p id="result-text"></p>
+      <div class="modal-actions">
+        <button onclick="restartGame()">もう一度</button>
+        <button onclick="showMenu()">メニュー</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
